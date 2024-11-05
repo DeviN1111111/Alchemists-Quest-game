@@ -1,11 +1,17 @@
-import pygame, math, csv, os
+import pygame
+import os
+import csv
 from settings import SCREEN_HEIGHT, SCREEN_WIDTH
+
+pygame.init()
 
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, image, x, y, spritesheet):
+    def __init__(self, image_path, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = spritesheet.parse_sprite(image)
+        self.image = pygame.image.load(
+            image_path
+        ).convert_alpha()  # Load image directly
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
 
@@ -14,10 +20,9 @@ class Tile(pygame.sprite.Sprite):
 
 
 class TileMap:
-    def __init__(self, filename, spritesheet):
+    def __init__(self, filename):
         self.tile_size = 32
         self.start_x, self.start_y = 0, 0
-        self.spritesheet = spritesheet
         self.tiles = self.load_tiles(filename)
         self.map_surface = pygame.Surface((self.map_w, self.map_h))
         self.map_surface.set_colorkey((0, 0, 0))
@@ -26,9 +31,6 @@ class TileMap:
     def load_map(self):
         for tile in self.tiles:
             tile.draw(self.map_surface)
-
-    def draw_map(self, surface):
-        surface.blit(self.map_surface, (0, 0))
 
     def read_csv(self, filename):
         map = []
@@ -46,10 +48,46 @@ class TileMap:
         for row in map:
             x = 0
             for tile in row:
-                if tile == "11":
-                    tiles.append(Tile("grass.png", x * self.tile_size, y * self.tile_size, self.spritesheet))
-                elif tile == "51":
-                    tiles.append(Tile("dirt.png", x * self.tile_size, y * self.tile_size, self.spritesheet))
+                if tile == "0":
+                    tiles.append(
+                        Tile(
+                            "../assets/img/tile000.png",
+                            x * self.tile_size,
+                            y * self.tile_size,
+                        )
+                    )
+                elif tile == "1":
+                    tiles.append(
+                        Tile(
+                            "../assets/img/tile001.png",
+                            x * self.tile_size,
+                            y * self.tile_size,
+                        )
+                    )
+                elif tile == "2":
+                    tiles.append(
+                        Tile(
+                            "../assets/img/tile002.png",
+                            x * self.tile_size,
+                            y * self.tile_size,
+                        )
+                    )
+                elif tile == "3":
+                    tiles.append(
+                        Tile(
+                            "../assets/img/tile003.png",
+                            x * self.tile_size,
+                            y * self.tile_size,
+                        )
+                    )
+                elif tile == "4":
+                    tiles.append(
+                        Tile(
+                            "../assets/img/tile004.png",
+                            x * self.tile_size,
+                            y * self.tile_size,
+                        )
+                    )
                 x += 1
             y += 1
 
