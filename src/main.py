@@ -1,7 +1,7 @@
 import pygame
 import os
-from game import Player, TileMap  # Ensure TileMap is imported
-from settings import *
+from game import * # Ensure TileMap is imported
+from settings import * 
 
 def game_loop():
     # Initializing pygame, setting up window
@@ -32,7 +32,7 @@ def game_loop():
         screen.fill((0, 0, 0))
 
         # Draw the map
-        tile_map.draw_map(screen)
+        tile_map.load_map()
 
         # Draw the player
         player.draw(screen)

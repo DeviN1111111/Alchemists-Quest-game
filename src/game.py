@@ -1,6 +1,7 @@
 import pygame
 import os
 import csv
+import math
 from settings import SCREEN_HEIGHT, SCREEN_WIDTH
 
 pygame.init()
@@ -21,7 +22,7 @@ class Tile(pygame.sprite.Sprite):
 
 class TileMap:
     def __init__(self, filename):
-        self.tile_size = 32
+        self.tile_size = 16
         self.start_x, self.start_y = 0, 0
         self.tiles = self.load_tiles(filename)
         self.map_surface = pygame.Surface((self.map_w, self.map_h))
@@ -51,7 +52,7 @@ class TileMap:
                 if tile == "0":
                     tiles.append(
                         Tile(
-                            "../assets/img/tile000.png",
+                            "assets/img/tile000.png",
                             x * self.tile_size,
                             y * self.tile_size,
                         )
@@ -59,7 +60,7 @@ class TileMap:
                 elif tile == "1":
                     tiles.append(
                         Tile(
-                            "../assets/img/tile001.png",
+                            "assets/img/tile001.png",
                             x * self.tile_size,
                             y * self.tile_size,
                         )
@@ -67,7 +68,7 @@ class TileMap:
                 elif tile == "2":
                     tiles.append(
                         Tile(
-                            "../assets/img/tile002.png",
+                            "assets/img/tile002.png",
                             x * self.tile_size,
                             y * self.tile_size,
                         )
@@ -75,7 +76,7 @@ class TileMap:
                 elif tile == "3":
                     tiles.append(
                         Tile(
-                            "../assets/img/tile003.png",
+                            "assets/img/tile003.png",
                             x * self.tile_size,
                             y * self.tile_size,
                         )
@@ -83,7 +84,7 @@ class TileMap:
                 elif tile == "4":
                     tiles.append(
                         Tile(
-                            "../assets/img/tile004.png",
+                            "assets/img/tile004.png",
                             x * self.tile_size,
                             y * self.tile_size,
                         )
