@@ -9,12 +9,12 @@ def game_loop():
     # Initializing pygame, setting up window
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("Alchemists Quest Game")
+    pygame.display.set_caption("Alchemists Quest")
     clock = pygame.time.Clock()
 
     # Load the player and map
-    player = Player(50, 50, player_speed)
-    game_map = Map(map_file="assets/levels/test_map.csv", tile_folder="assets/img")
+    player = Player(16, 16, 2)
+    game_map = Map(map_file="assets/levels/test_map.csv", tile_spritesheet="assets/img/spritesheet.png")
 
     running = True
     while running:
@@ -34,6 +34,8 @@ def game_loop():
 
         pygame.display.flip()
         clock.tick(FPS)
+
+    pygame.quit()
 
     pygame.quit()
 

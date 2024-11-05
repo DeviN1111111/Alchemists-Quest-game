@@ -1,23 +1,37 @@
 import pygame
 import csv
-import os
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
 class Map:
-    def __init__(self, map_file, tile_folder):
-        self.tile_folder = tile_folder
-        self.tiles = self.load_tiles()
+    def __init__(self, map_file, tile_spritesheet):  # Changed from tile_folder to tile_spritesheet
+        self.tile_spritesheet = tile_spritesheet  # Store the path to the spritesheet
+        self.tiles = self.load_tiles()  # Load tiles using the new method
         self.map_data = self.load_map(map_file)
 
     def load_tiles(self):
-        """Load tile images and map them to tile numbers."""
+        """Load tile images from a spritesheet."""
         tiles = {}
-        for i in range(5):  # Assuming you have 5 tiles (tile000 to tile004)
-            tile_path = os.path.join(self.tile_folder, f"tile00{i}.png")
-            tile_image = pygame.image.load(tile_path).convert()
-            tiles[i] = pygame.transform.scale(tile_image, (TILE_SIZE, TILE_SIZE))
+        spritesheet = pygame.image.load(self.tile_spritesheet).convert()  # Use the class attribute for the spritesheet
+
+        # Get the width and height of the spritesheet
+        sheet_width, sheet_height = spritesheet.get_size()
+
+        # Calculate the number of tiles based on the spritesheet width and TILE_SIZE
+        num_tiles = sheet_width // TILE_SIZE
+
+        # Loop through the number of tiles
+        for i in range(num_tiles):
+            # Calculate the position of the tile in the spritesheet
+            x = i * TILE_SIZE  # Calculate x position based on index (since it's a single row)
+            y = 0  # The y position is always 0 since it's a single row
+
+            # Extract tile from spritesheet
+            tile_image = spritesheet.subsurface((x, y, TILE_SIZE, TILE_SIZE))  # Extract tile from spritesheet
+            tiles[i] = tile_image
+
         return tiles
+
 
     def load_map(self, map_file):
         """Load map data from a CSV file."""
@@ -32,8 +46,9 @@ class Map:
         """Draw the map to the screen based on the loaded data."""
         for y, row in enumerate(self.map_data):
             for x, tile_num in enumerate(row):
-                if tile_num in self.tiles:
+                if tile_num in self.tiles and tile_num != -1:  # Added check for -1
                     screen.blit(self.tiles[tile_num], (x * TILE_SIZE, y * TILE_SIZE))
+
 
 
 class Room:
