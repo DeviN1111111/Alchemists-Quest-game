@@ -1,7 +1,9 @@
+# main.py
 import pygame
-import os
-from game import * # Ensure TileMap is imported
-from settings import * 
+from game import Player
+from settings import *
+from map import Map
+
 
 def game_loop():
     # Initializing pygame, setting up window
@@ -10,13 +12,9 @@ def game_loop():
     pygame.display.set_caption("Alchemists Quest Game")
     clock = pygame.time.Clock()
 
-    # Create player instance
-    player = Player(50, 50, 5)
-
-    # Load the tile map
-    level_path = os.path.join("assets", "levels", "test_map.csv")
-    print("Loading level from:", level_path)  # Debugging line
-    tile_map = TileMap(level_path)
+    # Load the player and map
+    player = Player(50, 50, player_speed)
+    game_map = Map(map_file="assets/levels/test_map.csv", tile_folder="assets/img")
 
     running = True
     while running:
@@ -25,17 +23,14 @@ def game_loop():
             if event.type == pygame.QUIT:
                 running = False
 
+        # Player movement
         keys = pygame.key.get_pressed()
         player.movement(keys)
 
-        # Fill the screen with black
-        screen.fill((0, 0, 0))
-
-        # Draw the map
-        tile_map.load_map()
-
-        # Draw the player
-        player.draw(screen)
+        # Render everything
+        screen.fill((0, 0, 0))  # Clear the screen
+        game_map.draw(screen)  # Draw the map
+        player.draw(screen)  # Draw the player
 
         pygame.display.flip()
         clock.tick(FPS)

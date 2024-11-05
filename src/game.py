@@ -1,99 +1,6 @@
 import pygame
-import os
-import csv
 import math
 from settings import SCREEN_HEIGHT, SCREEN_WIDTH
-
-pygame.init()
-
-
-class Tile(pygame.sprite.Sprite):
-    def __init__(self, image_path, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(
-            image_path
-        ).convert_alpha()  # Load image directly
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = x, y
-
-    def draw(self, surface):
-        surface.blit(self.image, (self.rect.x, self.rect.y))
-
-
-class TileMap:
-    def __init__(self, filename):
-        self.tile_size = 16
-        self.start_x, self.start_y = 0, 0
-        self.tiles = self.load_tiles(filename)
-        self.map_surface = pygame.Surface((self.map_w, self.map_h))
-        self.map_surface.set_colorkey((0, 0, 0))
-        self.load_map()
-
-    def load_map(self):
-        for tile in self.tiles:
-            tile.draw(self.map_surface)
-
-    def read_csv(self, filename):
-        map = []
-        with open(os.path.join(filename)) as data:
-            data = csv.reader(data, delimiter=",")
-            for row in data:
-                map.append(list(row))
-        return map
-
-    def load_tiles(self, filename):
-        tiles = []
-        map = self.read_csv(filename)
-
-        x, y = 0, 0
-        for row in map:
-            x = 0
-            for tile in row:
-                if tile == "0":
-                    tiles.append(
-                        Tile(
-                            "assets/img/tile000.png",
-                            x * self.tile_size,
-                            y * self.tile_size,
-                        )
-                    )
-                elif tile == "1":
-                    tiles.append(
-                        Tile(
-                            "assets/img/tile001.png",
-                            x * self.tile_size,
-                            y * self.tile_size,
-                        )
-                    )
-                elif tile == "2":
-                    tiles.append(
-                        Tile(
-                            "assets/img/tile002.png",
-                            x * self.tile_size,
-                            y * self.tile_size,
-                        )
-                    )
-                elif tile == "3":
-                    tiles.append(
-                        Tile(
-                            "assets/img/tile003.png",
-                            x * self.tile_size,
-                            y * self.tile_size,
-                        )
-                    )
-                elif tile == "4":
-                    tiles.append(
-                        Tile(
-                            "assets/img/tile004.png",
-                            x * self.tile_size,
-                            y * self.tile_size,
-                        )
-                    )
-                x += 1
-            y += 1
-
-        self.map_w, self.map_h = x * self.tile_size, y * self.tile_size
-        return tiles
 
 
 class Player:
@@ -101,8 +8,8 @@ class Player:
         self.x = x
         self.y = y
         self.speed = speed
-        self.width = 50
-        self.height = 50
+        self.width = 16
+        self.height = 16
         # self.image = self.load.image()
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
