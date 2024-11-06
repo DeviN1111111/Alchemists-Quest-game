@@ -1,7 +1,6 @@
-# main.py
 import pygame
-from game import Player
-from settings import *
+from game import Player, Enemy
+from settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE, FPS
 from map import Map
 
 
@@ -14,7 +13,15 @@ def game_loop():
 
     # Load the player and map
     player = Player(16, 16, 2)
-    game_map = Map(map_file="assets/levels/test_map.csv", tile_spritesheet="assets/img/spritesheet.png")
+    enemy = Enemy(100, 100, 1.5)
+    enemy2 = Enemy(100, 150, 0.5)
+    enemy3 = Enemy(150, 150, 0.75)
+    enemy4 = Enemy(200, 200, 1)
+
+    game_map = Map(
+        map_file="assets/levels/test_map.csv",
+        tile_spritesheet="assets/img/spritesheet.png",
+    )
 
     running = True
     while running:
@@ -32,10 +39,30 @@ def game_loop():
         game_map.draw(screen)  # Draw the map
         player.draw(screen)  # Draw the player
 
+        enemy.move_towards_player(player)
+        enemy.draw(screen)
+
+        enemy2.move_towards_player(player)
+        enemy2.draw(screen)
+
+        enemy3.move_towards_player(player)
+        enemy3.draw(screen)
+
+        enemy4.move_towards_player(player)
+        enemy4.draw(screen)
+
+        # enemy collision detection
+        if enemy.check_collision(player):
+            enemy.color = (255, 255, 0)
+        if enemy2.check_collision(player):
+            enemy2.color = (255, 255, 0)
+        if enemy3.check_collision(player):
+            enemy3.color = (255, 255, 0)
+        if enemy4.check_collision(player):
+            enemy4.color = (255, 255, 0)
+
         pygame.display.flip()
         clock.tick(FPS)
-
-    pygame.quit()
 
     pygame.quit()
 
