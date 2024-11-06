@@ -131,4 +131,38 @@ class Player:
             self.y += dy * self.speed
 
         self.x = max(0, min(SCREEN_WIDTH - self.width, self.x))
+<<<<<<< Updated upstream
         self.y = max(0, min(SCREEN_HEIGHT - self.height, self.y))
+=======
+        self.y = max(0, min(SCREEN_HEIGHT - self.height, self.y))
+
+
+class Enemy:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 16
+        self.height = 16
+        self.color = (0, 0, 0)
+        self.speed = 1
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
+
+    def move_towards_player(self, player):
+        dx = player.x - self.x
+        dy = player.y - self.y
+        distance = math.hypot(dx, dy)
+        if distance != 0:
+            dx, dy = dx / distance, dy / distance
+            self.x += dx * self.speed
+            self.y += dy * self.speed
+
+    def check_collision(self, player):
+        return (
+            self.x < player.x + player.width and
+            self.x + self.width > player.x and
+            self.y < player.y + player.height and
+            self.y + self.height > player.y
+        )
+>>>>>>> Stashed changes
