@@ -1,31 +1,16 @@
 import pygame
-<<<<<<< Updated upstream
-import os
-from game import * # Ensure TileMap is imported
-from settings import * 
-=======
 from game import Player, Enemy
-from settings import *
+from settings import TILE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, FPS
 from map import Map
 
->>>>>>> Stashed changes
 
 def game_loop():
     # Initializing pygame, setting up window
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("Alchemists Quest Game")
+    pygame.display.set_caption("Alchemists Quest")
     clock = pygame.time.Clock()
 
-<<<<<<< Updated upstream
-    # Create player instance
-    player = Player(50, 50, 5)
-
-    # Load the tile map
-    level_path = os.path.join("assets", "levels", "test_map.csv")
-    print("Loading level from:", level_path)  # Debugging line
-    tile_map = TileMap(level_path)
-=======
     # Load the player and map
     player = Player(16, 16, 2)
     enemy = Enemy(100, 100)
@@ -36,7 +21,6 @@ def game_loop():
         map_file="assets/levels/test_map.csv",
         tile_spritesheet="assets/img/spritesheet.png",
     )
->>>>>>> Stashed changes
 
     running = True
     while running:
@@ -45,19 +29,15 @@ def game_loop():
             if event.type == pygame.QUIT:
                 running = False
 
+        # Player movement
         keys = pygame.key.get_pressed()
         player.movement(keys)
 
-        # Fill the screen with black
-        screen.fill((0, 0, 0))
+        # Render everything
+        screen.fill((0, 0, 0))  # Clear the screen
+        game_map.draw(screen)  # Draw the map
+        player.draw(screen)  # Draw the player
 
-        # Draw the map
-        tile_map.load_map()
-
-        # Draw the player
-        player.draw(screen)
-
-        # enemy movement
         enemy.move_towards_player(player)
         enemy.draw(screen)
 
@@ -85,6 +65,9 @@ def game_loop():
 
     pygame.quit()
 
+
+if __name__ == "__main__":
+    game_loop()
 
 if __name__ == "__main__":
     game_loop()
