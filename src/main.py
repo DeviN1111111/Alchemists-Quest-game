@@ -17,11 +17,13 @@ def game_loop():
     enemy2 = Enemy(100, 150, 0.5)
     enemy3 = Enemy(150, 150, 0.75)
     enemy4 = Enemy(200, 200, 1)
-
-    game_map = Map(
-        map_file="assets/levels/test_map.csv",
-        tile_spritesheet="assets/img/spritesheet.png",
-    )
+    map_files = [
+                "assets/levels/test_map2_Background layer.csv",
+                "assets/levels/test_map2_Wall tiles.csv",
+                "assets/levels/test_map2_Teleporter tiles.csv",
+                "assets/levels/test_map2_receiver tiles.csv"
+            ]
+    game_map = Map(map_files, tile_spritesheet="assets/img/spritesheet.png")
 
     running = True
     while running:
