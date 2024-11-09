@@ -1,0 +1,267 @@
+[
+    {
+        "label": "pygame",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pygame",
+        "description": "pygame",
+        "detail": "pygame",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "SCREEN_HEIGHT",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "SCREEN_WIDTH",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "SCREEN_HEIGHT",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "SCREEN_WIDTH",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "TILE_SIZE",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "FPS",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "SCREEN_WIDTH",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "SCREEN_HEIGHT",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "TILE_SIZE",
+        "importPath": "settings",
+        "description": "settings",
+        "isExtraImport": true,
+        "detail": "settings",
+        "documentation": {}
+    },
+    {
+        "label": "Player",
+        "importPath": "game",
+        "description": "game",
+        "isExtraImport": true,
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "Enemy",
+        "importPath": "game",
+        "description": "game",
+        "isExtraImport": true,
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "Wave",
+        "importPath": "game",
+        "description": "game",
+        "isExtraImport": true,
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "Item",
+        "importPath": "game",
+        "description": "game",
+        "isExtraImport": true,
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "Map",
+        "importPath": "map",
+        "description": "map",
+        "isExtraImport": true,
+        "detail": "map",
+        "documentation": {}
+    },
+    {
+        "label": "csv",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "csv",
+        "description": "csv",
+        "detail": "csv",
+        "documentation": {}
+    },
+    {
+        "label": "Bullet",
+        "kind": 6,
+        "importPath": "src.game",
+        "description": "src.game",
+        "peekOfCode": "class Bullet:\n    def __init__(self, x, y, direction, speed, damage):\n        self.x = x\n        self.y = y\n        self.direction = direction\n        self.speed = speed\n        self.width = 5\n        self.height = 5\n        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)\n        self.damage = damage",
+        "detail": "src.game",
+        "documentation": {}
+    },
+    {
+        "label": "Player",
+        "kind": 6,
+        "importPath": "src.game",
+        "description": "src.game",
+        "peekOfCode": "class Player:\n    def __init__(self, x, y, speed, bullet_damage=10, fire_rate=5):\n        self.x = x\n        self.y = y\n        self.speed = speed\n        self.width = 16\n        self.height = 16\n        self.health = 100\n        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)\n        self.last_hit_time = 0",
+        "detail": "src.game",
+        "documentation": {}
+    },
+    {
+        "label": "Enemy",
+        "kind": 6,
+        "importPath": "src.game",
+        "description": "src.game",
+        "peekOfCode": "class Enemy:\n    def __init__(self, x, y, speed, health):\n        self.x = x\n        self.y = y\n        self.width = 16\n        self.height = 16\n        self.color = (0, 0, 0)\n        self.speed = speed\n        self.health = health\n        self.max_health = health",
+        "detail": "src.game",
+        "documentation": {}
+    },
+    {
+        "label": "Wave",
+        "kind": 6,
+        "importPath": "src.game",
+        "description": "src.game",
+        "peekOfCode": "class Wave:\n    def __init__(self, wave_number):\n        self.wave_number = wave_number\n        self.enemies = self.spawn_enemies()\n        self.is_wave_complete = False\n    def spawn_enemies(self):\n        enemies = []\n        base_health = 10\n        base_speed = 1\n        num_enemies = self.wave_number * 3",
+        "detail": "src.game",
+        "documentation": {}
+    },
+    {
+        "label": "Item",
+        "kind": 6,
+        "importPath": "src.game",
+        "description": "src.game",
+        "peekOfCode": "class Item:\n    def __init__(self, x, y, color):\n        self.x = x\n        self.y = y\n        self.width = 26\n        self.height = 26\n        self.color = color\n        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)\n    def draw(self, screen): #Hier draw je een rec die lijkt op een healing kit als je andere items wilt in spawnen moet je een nieuwe draw functie maken\n        pygame.draw.rect(screen, (0, 0, 0), self.rect, 3)",
+        "detail": "src.game",
+        "documentation": {}
+    },
+    {
+        "label": "game_loop",
+        "kind": 2,
+        "importPath": "src.main",
+        "description": "src.main",
+        "peekOfCode": "def game_loop():\n    pygame.init()\n    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))\n    pygame.display.set_caption(\"Alchemists Quest\")\n    clock = pygame.time.Clock()\n    player = Player(16, 16, 2)\n    game_map = Map(\"assets/levels/test_map2_Background layer.csv\", tile_spritesheet=\"assets/img/spritesheet.png\")\n    wave_number = 1\n    wave = Wave(wave_number)\n    next_wave_time = time.time() + 5",
+        "detail": "src.main",
+        "documentation": {}
+    },
+    {
+        "label": "Map",
+        "kind": 6,
+        "importPath": "src.map",
+        "description": "src.map",
+        "peekOfCode": "class Map:\n    def __init__(\n        self, map_file, tile_spritesheet\n    ):  # Changed from tile_folder to tile_spritesheet\n        self.tile_spritesheet = tile_spritesheet  # Store the path to the spritesheet\n        self.tiles = self.load_tiles()  # Load tiles using the new method\n        self.map_data = self.load_map(map_file)\n    def load_tiles(self):\n        \"\"\"Load tile images from a spritesheet.\"\"\"\n        tiles = {}",
+        "detail": "src.map",
+        "documentation": {}
+    },
+    {
+        "label": "Room",
+        "kind": 6,
+        "importPath": "src.map",
+        "description": "src.map",
+        "peekOfCode": "class Room:\n    def __init__(self, x, y, width, height, screen):\n        self.x = x  # Top-left x position\n        self.y = y  # Top-left y position\n        self.width = width  # Room width\n        self.height = height  # Room height\n        self.screen = screen  # Pygame screen to draw on\n        # Colors for room borders\n        self.border_color = (255, 255, 255)  # White for the borders\n        self.wall_thickness = 5  # Thickness of the walls",
+        "detail": "src.map",
+        "documentation": {}
+    },
+    {
+        "label": "SCREEN_WIDTH",
+        "kind": 5,
+        "importPath": "src.settings",
+        "description": "src.settings",
+        "peekOfCode": "SCREEN_WIDTH = 1280\nSCREEN_HEIGHT = 720\nFPS = 60\nTILE_SIZE = 16",
+        "detail": "src.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SCREEN_HEIGHT",
+        "kind": 5,
+        "importPath": "src.settings",
+        "description": "src.settings",
+        "peekOfCode": "SCREEN_HEIGHT = 720\nFPS = 60\nTILE_SIZE = 16",
+        "detail": "src.settings",
+        "documentation": {}
+    },
+    {
+        "label": "FPS",
+        "kind": 5,
+        "importPath": "src.settings",
+        "description": "src.settings",
+        "peekOfCode": "FPS = 60\nTILE_SIZE = 16",
+        "detail": "src.settings",
+        "documentation": {}
+    },
+    {
+        "label": "TILE_SIZE",
+        "kind": 5,
+        "importPath": "src.settings",
+        "description": "src.settings",
+        "peekOfCode": "TILE_SIZE = 16",
+        "detail": "src.settings",
+        "documentation": {}
+    }
+]
