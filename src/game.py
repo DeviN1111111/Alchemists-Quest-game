@@ -1,10 +1,9 @@
-<<<<<<< Updated upstream
-=======
 import pygame
 import math
 import time
 import random
 from settings import SCREEN_HEIGHT, SCREEN_WIDTH
+
 
 class Bullet:
     def __init__(self, x, y, direction, speed, damage):
@@ -48,14 +47,22 @@ class Player:
 
     def shoot(self):
         current_time = time.time()
-        if current_time - self.last_shot_time >= 1 / self.fire_rate:  # Only shoot if enough time has passed
+        if (
+            current_time - self.last_shot_time >= 1 / self.fire_rate
+        ):  # Only shoot if enough time has passed
             mouse_x, mouse_y = pygame.mouse.get_pos()
             direction = (mouse_x - self.x, mouse_y - self.y)
             distance = math.hypot(direction[0], direction[1])
             if distance != 0:
                 direction = (direction[0] / distance, direction[1] / distance)
 
-                bullet = Bullet(self.x + self.width // 2, self.y + self.height // 2, direction, 5, self.bullet_damage)
+                bullet = Bullet(
+                    self.x + self.width // 2,
+                    self.y + self.height // 2,
+                    direction,
+                    5,
+                    self.bullet_damage,
+                )
                 self.bullets.append(bullet)
                 self.last_shot_time = current_time  # Update the last shot time
 
@@ -86,7 +93,6 @@ class Player:
         self.health -= amount
         self.health = max(self.health, 0)
 
-
     def draw(self, screen):
         pygame.draw.rect(screen, (255, 0, 0), (self.x, self.y, self.width, self.height))
         self.draw_health_bar(screen)
@@ -95,8 +101,14 @@ class Player:
         bar_width = 50
         bar_height = 5
         health_percentage = self.health / 100
-        pygame.draw.rect(screen, (255, 0, 0), (self.x + 5, self.y - 10, bar_width, bar_height))
-        pygame.draw.rect(screen, (0, 255, 0), (self.x + 5, self.y - 10, bar_width * health_percentage, bar_height))
+        pygame.draw.rect(
+            screen, (255, 0, 0), (self.x + 5, self.y - 10, bar_width, bar_height)
+        )
+        pygame.draw.rect(
+            screen,
+            (0, 255, 0),
+            (self.x + 5, self.y - 10, bar_width * health_percentage, bar_height),
+        )
 
     def update_bullets(self, screen, enemies):
         for bullet in self.bullets[:]:
@@ -149,8 +161,14 @@ class Enemy:
         bar_width = 30
         bar_height = 3
         health_percentage = self.health / self.max_health
-        pygame.draw.rect(screen, (255, 0, 0), (self.x, self.y - 8, bar_width, bar_height))
-        pygame.draw.rect(screen, (0, 255, 0), (self.x, self.y - 8, bar_width * health_percentage, bar_height))
+        pygame.draw.rect(
+            screen, (255, 0, 0), (self.x, self.y - 8, bar_width, bar_height)
+        )
+        pygame.draw.rect(
+            screen,
+            (0, 255, 0),
+            (self.x, self.y - 8, bar_width * health_percentage, bar_height),
+        )
 
     def check_collision(self, player):
         return (
@@ -201,6 +219,7 @@ class Wave:
 
 import pygame
 
+
 class Item:
     def __init__(self, x, y, color):
         self.x = x
@@ -210,11 +229,35 @@ class Item:
         self.color = color
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    def draw(self, screen): #Hier draw je een rec die lijkt op een healing kit als je andere items wilt in spawnen moet je een nieuwe draw functie maken
+    def draw(
+        self, screen
+    ):  # Hier draw je een rec die lijkt op een healing kit als je andere items wilt in spawnen moet je een nieuwe draw functie maken
         pygame.draw.rect(screen, (0, 0, 0), self.rect, 3)
-        pygame.draw.rect(screen, (144, 238, 144), pygame.Rect(self.x + 3, self.y + 3, self.width - 6, self.height - 6))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.x + self.width // 4, self.y + self.height // 2 - 2, self.width // 2, 4))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.x + self.width // 2 - 2, self.y + self.height // 4, 4, self.height // 2))
+        pygame.draw.rect(
+            screen,
+            (144, 238, 144),
+            pygame.Rect(self.x + 3, self.y + 3, self.width - 6, self.height - 6),
+        )
+        pygame.draw.rect(
+            screen,
+            (255, 0, 0),
+            pygame.Rect(
+                self.x + self.width // 4,
+                self.y + self.height // 2 - 2,
+                self.width // 2,
+                4,
+            ),
+        )
+        pygame.draw.rect(
+            screen,
+            (255, 0, 0),
+            pygame.Rect(
+                self.x + self.width // 2 - 2,
+                self.y + self.height // 4,
+                4,
+                self.height // 2,
+            ),
+        )
 
     def check_collision(self, player):
         return (
@@ -223,7 +266,3 @@ class Item:
             and self.y < player.y + player.height
             and self.y + self.height > player.y
         )
-
-
-
->>>>>>> Stashed changes

@@ -1,11 +1,10 @@
-<<<<<<< Updated upstream
-=======
 import pygame
 from game import Player, Enemy, Wave, Item
 from settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE, FPS
 from map import Map
 import time
 import random
+
 
 def game_loop():
     pygame.init()
@@ -14,7 +13,10 @@ def game_loop():
     clock = pygame.time.Clock()
 
     player = Player(16, 16, 2)
-    game_map = Map("assets/levels/test_map2_Background layer.csv", tile_spritesheet="assets/img/spritesheet.png")
+    game_map = Map(
+        "assets/levels/test_map2_Background layer.csv",
+        tile_spritesheet="assets/img/spritesheet.png",
+    )
 
     wave_number = 1
     wave = Wave(wave_number)
@@ -56,7 +58,9 @@ def game_loop():
 
             if wave_start_display:
                 wave_text = font.render(f"Wave {wave_number}", True, (0, 0, 0))
-                screen.blit(wave_text, (SCREEN_WIDTH // 2 - wave_text.get_width() // 2, 20))
+                screen.blit(
+                    wave_text, (SCREEN_WIDTH // 2 - wave_text.get_width() // 2, 20)
+                )
                 if time.time() - wave_text_start_time > wave_display_time:
                     wave_start_display = False
 
@@ -64,7 +68,13 @@ def game_loop():
             if wave.is_wave_complete and current_time >= next_wave_time:
                 wave_number += 1
                 wave = Wave(wave_number)
-                healing_items = [Item(random.randint(50, SCREEN_WIDTH - 50), random.randint(50, SCREEN_HEIGHT - 50), (200, 238, 200))]
+                healing_items = [
+                    Item(
+                        random.randint(50, SCREEN_WIDTH - 50),
+                        random.randint(50, SCREEN_HEIGHT - 50),
+                        (200, 238, 200),
+                    )
+                ]
                 next_wave_time = current_time + 5
 
                 wave_start_display = True
@@ -79,10 +89,21 @@ def game_loop():
         if game_over:
             screen.fill((0, 0, 0))
             game_over_text = font.render("GAME OVER", True, (255, 0, 0))
-            screen.blit(game_over_text, (SCREEN_WIDTH // 2 - game_over_text.get_width() // 2, SCREEN_HEIGHT // 3))
+            screen.blit(
+                game_over_text,
+                (
+                    SCREEN_WIDTH // 2 - game_over_text.get_width() // 2,
+                    SCREEN_HEIGHT // 3,
+                ),
+            )
 
-            restart_text = font.render("Press R to Restart or Q to Quit", True, (255, 255, 255))
-            screen.blit(restart_text, (SCREEN_WIDTH // 2 - restart_text.get_width() // 2, SCREEN_HEIGHT // 2))
+            restart_text = font.render(
+                "Press R to Restart or Q to Quit", True, (255, 255, 255)
+            )
+            screen.blit(
+                restart_text,
+                (SCREEN_WIDTH // 2 - restart_text.get_width() // 2, SCREEN_HEIGHT // 2),
+            )
 
             pygame.display.flip()
 
@@ -111,6 +132,6 @@ def game_loop():
 
     pygame.quit()
 
+
 if __name__ == "__main__":
     game_loop()
->>>>>>> Stashed changes
