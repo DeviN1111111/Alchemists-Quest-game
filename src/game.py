@@ -34,6 +34,12 @@ class Player:
         self.x = x
         self.y = y
         self.speed = speed
+        self.is_dashing = False
+        self.dash_speed = speed * 3
+        self.dash_time = 0.2
+        self.dash_cooldown = 2
+        self.last_dash = 0
+        self.dash_direction = (0, 0)
         self.width = 16
         self.height = 16
         self.health = 100
@@ -70,24 +76,38 @@ class Player:
         dx = 0
         dy = 0
 
-        if keys[pygame.K_a]:
-            dx -= 1
-        if keys[pygame.K_d]:
-            dx += 1
-        if keys[pygame.K_w]:
-            dy -= 1
-        if keys[pygame.K_s]:
-            dy += 1
+        if not self.is_dashing:
+            if keys[pygame.K_a]:
+                dx -= 1
+            if keys[pygame.K_d]:
+                dx += 1
+            if keys[pygame.K_w]:
+                dy -= 1
+            if keys[pygame.K_s]:
+                dy += 1
 
-        if dx != 0 or dy != 0:
-            length = math.sqrt(dx**2 + dy**2)
-            dx /= length
-            dy /= length
-            self.x += dx * self.speed
-            self.y += dy * self.speed
+            if dx != 0 or dy != 0:
+                length = math.sqrt(dx**2 + dy**2)
+                dx /= length
+                dy /= length
+                self.x += dx * self.speed
+                self.y += dy * self.speed
+                self.dash_direction = (dx, dy)
+
+            if keys[pygame.K_SPACE] and time.time() - self.last_dash > self.dash_cooldown:
+                self.is_dashing = True
+                self.dash_start_time = time.time()
+                self.last_dash = time.time()
+        else:
+            if time.time() - self.dash_start_time < self.dash_time:
+                self.x += self.dash_direction[0] * self.dash_speed
+                self.y += self.dash_direction[1] * self.dash_speed
+            else:
+                self.is_dashing = False
 
         self.x = max(0, min(SCREEN_WIDTH - self.width, self.x))
         self.y = max(0, min(SCREEN_HEIGHT - self.height, self.y))
+        self.rect.topleft = (self.x, self.y)
 
     def take_damage(self, amount):
         self.health -= amount
@@ -266,3 +286,30 @@ class Item:
             and self.y < player.y + player.height
             and self.y + self.height > player.y
         )
+
+
+class Camera:
+    def __init__(self, width, height):
+        self.camera = pygame.Rect(0, 0, width, height)
+        self.width = width
+        self.height = height
+        self.zoom = 1  # Begin met een zoomfactor van 1 (geen inzoomen)
+
+    def apply(self, entity):
+        return entity.rect.move(self.camera.topleft)
+
+    def update(self, target):
+
+        x = -target.rect.centerx + self.width // 2
+        y = -target.rect.centery + self.height // 2
+
+        # Beperk de camera aan de randen van de wereld
+        x = min(0, x)  # Links
+        y = min(0, y)  # Boven
+        x = max(-(self.width * self.zoom - self.width), x)  # Rechts
+        y = max(-(self.height * self.zoom - self.height), y)  # Onder
+
+        self.camera = pygame.Rect(x, y, self.width, self.height)
+
+    def set_zoom(self, zoom):
+        self.zoom = zoom
