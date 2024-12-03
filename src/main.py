@@ -5,7 +5,6 @@ from map import Map
 import time
 import random
 
-
 def game_loop():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -43,11 +42,16 @@ def game_loop():
             if pygame.mouse.get_pressed()[0]:
                 player.shoot()
 
-            screen.fill((0, 0, 0))
+            screen.fill((0, 0, 0))  
+
+            
             game_map.draw(screen)
+
+            
             player.draw(screen)
             player.update_bullets(screen, wave.enemies)
 
+            
             for healing_item in healing_items[:]:
                 healing_item.draw(screen)
 
@@ -56,6 +60,7 @@ def game_loop():
                     healing_items.remove(healing_item)
                     break
 
+           
             if wave_start_display:
                 wave_text = font.render(f"Wave {wave_number}", True, (0, 0, 0))
                 screen.blit(
@@ -80,14 +85,21 @@ def game_loop():
                 wave_start_display = True
                 wave_text_start_time = current_time
 
+            
             wave.update(player)
             wave.draw(screen)
 
+           
             if player.health <= 0:
                 game_over = True
 
+            
+            player.draw_health_bar(screen)
+            player.draw_dash_cooldown(screen)
+
         if game_over:
-            screen.fill((0, 0, 0))
+            screen.fill((0, 0, 0))  
+
             game_over_text = font.render("GAME OVER", True, (255, 0, 0))
             screen.blit(
                 game_over_text,
@@ -105,7 +117,7 @@ def game_loop():
                 (SCREEN_WIDTH // 2 - restart_text.get_width() // 2, SCREEN_HEIGHT // 2),
             )
 
-            pygame.display.flip()
+            pygame.display.flip()  
 
             waiting_for_input = True
             while waiting_for_input:
@@ -116,22 +128,11 @@ def game_loop():
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_q:
                             running = False
-                            waiting_for_input = False
-                        elif event.key == pygame.K_r:
-                            player.health = 100
-                            wave_number = 1
-                            wave = Wave(wave_number)
-                            next_wave_time = time.time() + 5
-                            game_over = False
-                            wave_start_display = True
-                            wave_text_start_time = time.time()
-                            waiting_for_input = False
+                        if event.key == pygame.K_r:  
+                            game_loop()
 
-        pygame.display.flip()
-        clock.tick(FPS)
-
-    pygame.quit()
-
+        pygame.display.flip() 
+        clock.tick(FPS)  
 
 if __name__ == "__main__":
     game_loop()

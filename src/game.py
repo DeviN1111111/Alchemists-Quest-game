@@ -4,7 +4,6 @@ import time
 import random
 from settings import SCREEN_HEIGHT, SCREEN_WIDTH
 
-
 class Bullet:
     def __init__(self, x, y, direction, speed, damage):
         self.x = x
@@ -48,14 +47,12 @@ class Player:
         self.hit_cooldown = 1.0
         self.bullets = []
         self.bullet_damage = bullet_damage
-        self.fire_rate = fire_rate  # Bullets per second
-        self.last_shot_time = 0  # To track the last time the player shot
+        self.fire_rate = fire_rate
+        self.last_shot_time = 0
 
     def shoot(self):
         current_time = time.time()
-        if (
-            current_time - self.last_shot_time >= 1 / self.fire_rate
-        ):  # Only shoot if enough time has passed
+        if current_time - self.last_shot_time >= 1 / self.fire_rate:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             direction = (mouse_x - self.x, mouse_y - self.y)
             distance = math.hypot(direction[0], direction[1])
@@ -70,7 +67,7 @@ class Player:
                     self.bullet_damage,
                 )
                 self.bullets.append(bullet)
-                self.last_shot_time = current_time  # Update the last shot time
+                self.last_shot_time = current_time
 
     def movement(self, keys):
         dx = 0
@@ -115,20 +112,6 @@ class Player:
 
     def draw(self, screen):
         pygame.draw.rect(screen, (255, 0, 0), (self.x, self.y, self.width, self.height))
-        self.draw_health_bar(screen)
-
-    def draw_health_bar(self, screen):
-        bar_width = 50
-        bar_height = 5
-        health_percentage = self.health / 100
-        pygame.draw.rect(
-            screen, (255, 0, 0), (self.x + 5, self.y - 10, bar_width, bar_height)
-        )
-        pygame.draw.rect(
-            screen,
-            (0, 255, 0),
-            (self.x + 5, self.y - 10, bar_width * health_percentage, bar_height),
-        )
 
     def update_bullets(self, screen, enemies):
         for bullet in self.bullets[:]:
@@ -138,8 +121,32 @@ class Player:
             for enemy in enemies[:]:
                 if bullet.check_collision(enemy):
                     enemy.take_damage(bullet.damage)
-                    self.bullets.remove(bullet)  # Remove the bullet after collision
+                    self.bullets.remove(bullet)
                     break
+
+    def draw_health_bar(self, screen):
+        bar_width = 200
+        bar_height = 20
+        health_percentage = self.health / 100
+        pygame.draw.rect(screen, (255, 0, 0), (10, 10, bar_width, bar_height))
+        pygame.draw.rect(
+            screen,
+            (0, 255, 0),
+            (10, 10, bar_width * health_percentage, bar_height),
+        )
+
+    def draw_dash_cooldown(self, screen):
+        bar_width = 200
+        bar_height = 10
+        elapsed_time = time.time() - self.last_dash
+        cooldown_percentage = min(elapsed_time / self.dash_cooldown, 1.0)
+        pygame.draw.rect(screen, (100, 100, 100), (10, 40, bar_width, bar_height))
+        pygame.draw.rect(
+            screen,
+            (0, 0, 255),
+            (10, 40, bar_width * cooldown_percentage, bar_height),
+        )
+
 
 
 class Enemy:
@@ -154,18 +161,33 @@ class Enemy:
         self.max_health = health
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
-        self.draw_health_bar(screen)
-
-    def move_towards_player(self, player):
+    def move_towards_player(self, player, enemies):
         dx = player.x - self.x
         dy = player.y - self.y
         distance = math.hypot(dx, dy)
+
         if distance != 0:
-            dx, dy = dx / distance, dy / distance
-            self.x += dx * self.speed
-            self.y += dy * self.speed
+            dx, dy = dx / distance, dy / distance  
+
+        # kijkt voor collision
+        for other_enemy in enemies:
+            if other_enemy != self:  
+                dist_to_other = math.hypot(other_enemy.x - self.x, other_enemy.y - self.y)
+                if dist_to_other < 20:  
+                    avoid_dx = self.x - other_enemy.x
+                    avoid_dy = self.y - other_enemy.y
+                    avoid_length = math.hypot(avoid_dx, avoid_dy)
+                    if avoid_length != 0:
+                        avoid_dx, avoid_dy = avoid_dx / avoid_length, avoid_dy / avoid_length
+                        dx += avoid_dx * 0.5
+                        dy += avoid_dy * 0.5
+
+        length = math.hypot(dx, dy)
+        if length != 0:
+            dx, dy = dx / length, dy / length
+
+        self.x += dx * self.speed
+        self.y += dy * self.speed
 
         self.rect.x = self.x
         self.rect.y = self.y
@@ -177,26 +199,24 @@ class Enemy:
     def is_defeated(self):
         return self.health <= 0
 
+    def draw(self, screen):
+        pygame.draw.rect(screen, self.color, self.rect)
+        self.draw_health_bar(screen)
+
     def draw_health_bar(self, screen):
         bar_width = 30
         bar_height = 3
         health_percentage = self.health / self.max_health
-        pygame.draw.rect(
-            screen, (255, 0, 0), (self.x, self.y - 8, bar_width, bar_height)
-        )
+        pygame.draw.rect(screen, (255, 0, 0), (self.x, self.y - 8, bar_width, bar_height))
         pygame.draw.rect(
             screen,
             (0, 255, 0),
             (self.x, self.y - 8, bar_width * health_percentage, bar_height),
         )
 
-    def check_collision(self, player):
-        return (
-            self.x < player.x + player.width
-            and self.x + self.width > player.x
-            and self.y < player.y + player.height
-            and self.y + self.height > player.y
-        )
+    def check_collision(self, other):
+        return self.rect.colliderect(other.rect)
+
 
 
 class Wave:
@@ -222,7 +242,7 @@ class Wave:
 
     def update(self, player):
         for enemy in self.enemies[:]:
-            enemy.move_towards_player(player)
+            enemy.move_towards_player(player, self.enemies)  
             if enemy.check_collision(player):
                 player.take_damage(2)
                 enemy.take_damage(1)
@@ -237,7 +257,6 @@ class Wave:
             enemy.draw(screen)
 
 
-import pygame
 
 
 class Item:

@@ -170,7 +170,7 @@
         "kind": 6,
         "importPath": "src.game",
         "description": "src.game",
-        "peekOfCode": "class Player:\n    def __init__(self, x, y, speed, bullet_damage=10, fire_rate=5):\n        self.x = x\n        self.y = y\n        self.speed = speed\n        self.width = 16\n        self.height = 16\n        self.health = 100\n        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)\n        self.last_hit_time = 0",
+        "peekOfCode": "class Player:\n    def __init__(self, x, y, speed, bullet_damage=10, fire_rate=5):\n        self.x = x\n        self.y = y\n        self.speed = speed\n        self.is_dashing = False\n        self.dash_speed = speed * 3\n        self.dash_time = 0.2\n        self.dash_cooldown = 2\n        self.last_dash = 0",
         "detail": "src.game",
         "documentation": {}
     },
@@ -197,7 +197,16 @@
         "kind": 6,
         "importPath": "src.game",
         "description": "src.game",
-        "peekOfCode": "class Item:\n    def __init__(self, x, y, color):\n        self.x = x\n        self.y = y\n        self.width = 26\n        self.height = 26\n        self.color = color\n        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)\n    def draw(self, screen): #Hier draw je een rec die lijkt op een healing kit als je andere items wilt in spawnen moet je een nieuwe draw functie maken\n        pygame.draw.rect(screen, (0, 0, 0), self.rect, 3)",
+        "peekOfCode": "class Item:\n    def __init__(self, x, y, color):\n        self.x = x\n        self.y = y\n        self.width = 26\n        self.height = 26\n        self.color = color\n        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)\n    def draw(\n        self, screen",
+        "detail": "src.game",
+        "documentation": {}
+    },
+    {
+        "label": "Camera",
+        "kind": 6,
+        "importPath": "src.game",
+        "description": "src.game",
+        "peekOfCode": "class Camera:\n    def __init__(self, width, height):\n        self.camera = pygame.Rect(0, 0, width, height)\n        self.width = width\n        self.height = height\n        self.zoom = 1  # Begin met een zoomfactor van 1 (geen inzoomen)\n    def apply(self, entity):\n        return entity.rect.move(self.camera.topleft)\n    def update(self, target):\n        x = -target.rect.centerx + self.width // 2",
         "detail": "src.game",
         "documentation": {}
     },
@@ -206,7 +215,7 @@
         "kind": 2,
         "importPath": "src.main",
         "description": "src.main",
-        "peekOfCode": "def game_loop():\n    pygame.init()\n    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))\n    pygame.display.set_caption(\"Alchemists Quest\")\n    clock = pygame.time.Clock()\n    player = Player(16, 16, 2)\n    game_map = Map(\"assets/levels/test_map2_Background layer.csv\", tile_spritesheet=\"assets/img/spritesheet.png\")\n    wave_number = 1\n    wave = Wave(wave_number)\n    next_wave_time = time.time() + 5",
+        "peekOfCode": "def game_loop():\n    pygame.init()\n    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))\n    pygame.display.set_caption(\"Alchemists Quest\")\n    clock = pygame.time.Clock()\n    player = Player(16, 16, 2)\n    game_map = Map(\n        \"assets/levels/test_map2_Background layer.csv\",\n        tile_spritesheet=\"assets/img/spritesheet.png\",\n    )",
         "detail": "src.main",
         "documentation": {}
     },
