@@ -5,13 +5,14 @@ from map import Map
 import time
 import random
 
+
 def game_loop():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Alchemists Quest")
     clock = pygame.time.Clock()
 
-    player = Player(16, 16, 2)
+    player = Player(640, 640, 2)
     game_map = Map(
         "assets/levels/test_map2_Background layer.csv",
         tile_spritesheet="assets/img/spritesheet.png",
@@ -42,16 +43,18 @@ def game_loop():
             if pygame.mouse.get_pressed()[0]:
                 player.shoot()
 
-            screen.fill((0, 0, 0))  
+            screen.fill((0, 0, 0))
 
-            
             game_map.draw(screen)
 
-            
             player.draw(screen)
             player.update_bullets(screen, wave.enemies)
+            # Draw the crosshair
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            crosshair_size = 10
+            pygame.draw.line(screen, (10, 10, 10), (mouse_x - crosshair_size, mouse_y), (mouse_x + crosshair_size, mouse_y), 2)
+            pygame.draw.line(screen, (10, 10, 10), (mouse_x, mouse_y - crosshair_size), (mouse_x, mouse_y + crosshair_size), 2)
 
-            
             for healing_item in healing_items[:]:
                 healing_item.draw(screen)
 
@@ -60,7 +63,6 @@ def game_loop():
                     healing_items.remove(healing_item)
                     break
 
-           
             if wave_start_display:
                 wave_text = font.render(f"Wave {wave_number}", True, (0, 0, 0))
                 screen.blit(
@@ -85,20 +87,17 @@ def game_loop():
                 wave_start_display = True
                 wave_text_start_time = current_time
 
-            
-            wave.update(player)
+            wave.update(player, screen)
             wave.draw(screen)
 
-           
             if player.health <= 0:
                 game_over = True
 
-            
             player.draw_health_bar(screen)
             player.draw_dash_cooldown(screen)
 
         if game_over:
-            screen.fill((0, 0, 0))  
+            screen.fill((0, 0, 0))
 
             game_over_text = font.render("GAME OVER", True, (255, 0, 0))
             screen.blit(
@@ -117,7 +116,7 @@ def game_loop():
                 (SCREEN_WIDTH // 2 - restart_text.get_width() // 2, SCREEN_HEIGHT // 2),
             )
 
-            pygame.display.flip()  
+            pygame.display.flip()
 
             waiting_for_input = True
             while waiting_for_input:
@@ -128,11 +127,12 @@ def game_loop():
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_q:
                             running = False
-                        if event.key == pygame.K_r:  
+                        if event.key == pygame.K_r:
                             game_loop()
 
-        pygame.display.flip() 
-        clock.tick(FPS)  
+        pygame.display.flip()
+        clock.tick(FPS)
+
 
 if __name__ == "__main__":
     game_loop()
